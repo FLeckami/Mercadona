@@ -1,9 +1,18 @@
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Mercadona.Data;
+using Mercadona.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<MercadonaContext>(option =>
+    option.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"))
+);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
